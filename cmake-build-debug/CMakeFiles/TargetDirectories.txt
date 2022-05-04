@@ -1,0 +1,5 @@
+C:/Users/jaroslavp/eset_challenge/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/jaroslavp/eset_challenge/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/jaroslavp/eset_challenge/cmake-build-debug/minigrep/CMakeFiles/minigrep.dir
+C:/Users/jaroslavp/eset_challenge/cmake-build-debug/minigrep/CMakeFiles/edit_cache.dir
+C:/Users/jaroslavp/eset_challenge/cmake-build-debug/minigrep/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,13 @@
+BreakBeforeBraces: Attach
+ColumnLimit: 120
+CompactNamespaces: false
+Cpp11BracedListStyle: true
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Never
+FixNamespaceComments: true
+IncludeBlocks: Regroup
+IndentAccessModifiers: false
+IndentCaseBlocks: false
+IndentWidth: 4
+NamespaceIndentation: None
+SortUsingDeclarations: true
