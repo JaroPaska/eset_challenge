@@ -1,5 +1,0 @@
-/home/jaroslavp/eset_challenge/cmake-build-minsizerel/CMakeFiles/edit_cache.dir
-/home/jaroslavp/eset_challenge/cmake-build-minsizerel/CMakeFiles/rebuild_cache.dir
-/home/jaroslavp/eset_challenge/cmake-build-minsizerel/minigrep/CMakeFiles/minigrep.dir
-/home/jaroslavp/eset_challenge/cmake-build-minsizerel/minigrep/CMakeFiles/edit_cache.dir
-/home/jaroslavp/eset_challenge/cmake-build-minsizerel/minigrep/CMakeFiles/rebuild_cache.dir

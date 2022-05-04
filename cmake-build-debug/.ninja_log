@@ -1,5 +1,0 @@
-# ninja log v5
-1830	2039	6732538130140761	minigrep/minigrep.exe	7d2441d1525bb564
-0	1778	6732533864424173	minigrep/CMakeFiles/minigrep.dir/main.cpp.obj	e3f89df364c0c3cf
-0	1829	6732538128275692	minigrep/CMakeFiles/minigrep.dir/minigrep.cpp.obj	3e7917e1076e5321
-1	135	6732558409478295	build.ninja	4c991d4ca38622b3
