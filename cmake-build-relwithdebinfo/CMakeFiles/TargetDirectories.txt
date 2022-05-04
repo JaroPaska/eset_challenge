@@ -1,5 +1,5 @@
-C:/Users/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/CMakeFiles/edit_cache.dir
-C:/Users/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/CMakeFiles/rebuild_cache.dir
-C:/Users/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/minigrep/CMakeFiles/minigrep.dir
-C:/Users/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/minigrep/CMakeFiles/edit_cache.dir
-C:/Users/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/minigrep/CMakeFiles/rebuild_cache.dir
+/home/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/CMakeFiles/edit_cache.dir
+/home/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/CMakeFiles/rebuild_cache.dir
+/home/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/minigrep/CMakeFiles/minigrep.dir
+/home/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/minigrep/CMakeFiles/edit_cache.dir
+/home/jaroslavp/eset_challenge/cmake-build-relwithdebinfo/minigrep/CMakeFiles/rebuild_cache.dir
