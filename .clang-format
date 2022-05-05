@@ -10,4 +10,5 @@ IndentAccessModifiers: false
 IndentCaseBlocks: false
 IndentWidth: 4
 NamespaceIndentation: None
+PointerAlignment: Left
 SortUsingDeclarations: true

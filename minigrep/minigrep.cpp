@@ -4,19 +4,20 @@
 #include <iostream>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace minigrep {
 
-constexpr int border_size = 3; /**< The number of characters to show for the prefix and suffix. */
-constexpr int chunk_size = 1000000; /**< The maximum amount of characters that a single async task can process. */
+constexpr int border_size = 3;      /**< The number of characters to show for the prefix and suffix. */
+constexpr int chunk_size = 1'000'000; /**< The maximum amount of characters that a single async task can process. */
 
 /**
  * Data structure that represents a half-open interval.
  */
 struct Range {
     int begin; /**< Beginning of range (inclusive). */
-    int end; /**< End of range (exclusive). */
+    int end;   /**< End of range (exclusive). */
 
     /**
      * Clamps this range to fit inside the half-open interval [min, max).
@@ -33,9 +34,7 @@ struct Range {
      * @param amount The amount to extend the range by.
      * @return The extended range.
      */
-    [[nodiscard]] constexpr Range extend(int amount) const {
-        return Range{begin - amount, end + amount};
-    }
+    [[nodiscard]] constexpr Range extend(int amount) const { return Range{begin - amount, end + amount}; }
 
     /**
      * Size of this range.
@@ -61,21 +60,21 @@ struct Range {
  * @param r right hand side
  * @return Whether the ranges are equal.
  */
-[[nodiscard]] constexpr bool operator==(const Range &l, const Range &r) { return l.begin == r.begin && l.end == r.end; }
+[[nodiscard]] constexpr bool operator==(const Range& l, const Range& r) { return l.begin == r.begin && l.end == r.end; }
 
 /**
  * A file on disk.
  */
 struct File {
     std::string path; /**< The path to the file. */
-    int size; /**< The size of the file. */
+    int size;         /**< The size of the file. */
 
     /**
      * Constructs a file using the specified path to determine the size.
      * @param path Path of the file.
      */
-    File(const std::string &path) : path(path) {
-        std::ifstream is(path);
+    File(std::string_view path) : path(path) {
+        std::ifstream is(this->path);
         is.seekg(0, is.end);
         size = is.tellg();
     }
@@ -85,9 +84,9 @@ struct File {
  * A segment of a file that is to be searched.
  */
 struct FileChunk {
-    File file; /**< The file to be searched. */
+    File file;    /**< The file to be searched. */
     Range search; /**< The range to be searched. */
-    Range read; /**< The range that has to be read (this may be larger to properly output the prefix/suffix). */
+    Range read;   /**< The range that has to be read (this may be larger to properly output the prefix/suffix). */
     std::string contents; /**< The contents corresponding to the read range. */
 
     /**
@@ -95,7 +94,7 @@ struct FileChunk {
      * @param file The file to be searched.
      * @param search The range to be searched.
      */
-    constexpr FileChunk(const File &file, const Range &search)
+    FileChunk(const File& file, const Range& search)
         : file(file), search(search), read(search.extend(border_size).clamp(0, file.size)) {}
 
     /**
@@ -114,8 +113,8 @@ struct FileChunk {
  * Data relevant to an occurrence of the searched string.
  */
 struct Match {
-    std::string path; /**< The path to the file in which the match occurred. */
-    int position; /**< The offset of the match from the start of the file. */
+    std::string path;   /**< The path to the file in which the match occurred. */
+    int position;       /**< The offset of the match from the start of the file. */
     std::string prefix; /**< The characters before the match. */
     std::string suffix; /**< The characters after the match. */
 };
@@ -126,7 +125,7 @@ struct Match {
  * @param m The match to output.
  * @return The stream.
  */
-std::ostream &operator<<(std::ostream &os, const Match &m) {
+std::ostream& operator<<(std::ostream& os, const Match& m) {
     return os << m.path << "(" << m.position << "):" << m.prefix << "..." << m.suffix;
 }
 
@@ -136,7 +135,7 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
  * @param index The index of the start of the match.
  * @return The characters before the match.
  */
-[[nodiscard]] constexpr std::string prefix(const std::string &contents, int index) {
+[[nodiscard]] constexpr std::string_view prefix(std::string_view contents, int index) {
     int offset = std::max(index - border_size, 0);
     int count = index - offset;
     return contents.substr(offset, count);
@@ -148,7 +147,7 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
  * @param index The first index past the end of the match.
  * @return The characters after the match.
  */
-[[nodiscard]] constexpr std::string suffix(const std::string &contents, int index) {
+[[nodiscard]] constexpr std::string_view suffix(std::string_view contents, int index) {
     return contents.substr(index, border_size);
 }
 
@@ -157,9 +156,9 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
  * @param string String to be formatted.
  * @return A string with whitespace replaced.
  */
-[[nodiscard]] constexpr std::string transform(const std::string &string) {
+[[nodiscard]] constexpr std::string transform(std::string_view string) {
     std::string result;
-    for (const auto &c : string)
+    for (const auto& c : string)
         switch (c) {
         case '\n':
             result += "\\n";
@@ -180,7 +179,7 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
  * @param string The string to search for.
  * @return All the matches.
  */
-[[nodiscard]] std::vector<Match> matches(const FileChunk &chunk, const std::string &string) {
+[[nodiscard]] std::vector<Match> matches(const FileChunk& chunk, std::string_view string) {
     std::vector<Match> result;
     auto to_index = [&](int pos) { return pos - chunk.read.begin; };
     for (std::size_t pos = chunk.contents.find(string, to_index(chunk.search.begin));
@@ -196,7 +195,7 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
  * @param path Path to the directory or file to be searched.
  * @return All files to be searched, or std::nullopt if the given path is not valid.
  */
-[[nodiscard]] std::optional<std::vector<File>> files(const std::string &path) {
+[[nodiscard]] std::optional<std::vector<File>> files(std::string_view path) {
     if (std::filesystem::is_regular_file(path))
         return std::vector<File>{File(path)};
 
@@ -204,7 +203,7 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
         return std::nullopt;
 
     std::vector<File> result;
-    for (const auto &entry : std::filesystem::recursive_directory_iterator(path))
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
         if (entry.is_regular_file())
             result.emplace_back(entry.path().string());
     return result;
@@ -215,7 +214,7 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
  * @param file File to be split.
  * @return Chunks that correspond to the file as a whole.
  */
-[[nodiscard]] std::vector<FileChunk> chunks(const File &file) {
+[[nodiscard]] std::vector<FileChunk> chunks(const File& file) {
     std::vector<FileChunk> result{FileChunk(file, Range{0, file.size})};
     std::optional<std::pair<Range, Range>> split_chunks;
     while ((split_chunks = result.back().search.split())) {
@@ -230,12 +229,12 @@ std::ostream &operator<<(std::ostream &os, const Match &m) {
  * @param chunk Chunk to be searched.
  * @param string String to search for.
  */
-void search(FileChunk &chunk, const std::string &string) {
+void search(FileChunk& chunk, std::string_view string) {
     chunk.fetch_contents();
     auto all_matches = matches(chunk, string);
     static std::mutex mutex;
     std::lock_guard<std::mutex> lock(mutex);
-    for (const auto &match : all_matches)
+    for (const auto& match : all_matches)
         std::cout << match << "\n";
 }
 
@@ -257,7 +256,7 @@ static_assert(transform("\t\n") == "\\t\\n");
 
 } // namespace minigrep
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 3) {
         std::cerr << "Usage: minigrep <directory|file> <search string>\n";
         return EXIT_FAILURE;
@@ -270,12 +269,12 @@ int main(int argc, char **argv) {
     }
 
     std::vector<minigrep::FileChunk> all_chunks;
-    for (const auto &file : files.value()) {
+    for (const auto& file : files.value()) {
         const auto chunks = minigrep::chunks(file);
         all_chunks.insert(all_chunks.end(), chunks.begin(), chunks.end());
     }
 
     std::vector<std::future<void>> futures;
-    for (auto &chunk : all_chunks)
+    for (auto& chunk : all_chunks)
         futures.push_back(std::async(std::launch::async, minigrep::search, std::ref(chunk), argv[2]));
 }

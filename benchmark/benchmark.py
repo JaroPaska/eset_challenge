@@ -5,7 +5,7 @@ n = 1
 print('Writing test files')
 for i in range(n):
     with open(f'{i}.in', 'w') as f:
-        f.write(''.join([str(random.randint(0, 1)) for _ in range(100000000)]))
+        f.write(''.join([str(random.randint(0, 1)) for _ in range(100_000_000)]))
 
 print('Running minigrep')
 import subprocess, sys, time
