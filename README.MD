@@ -9,7 +9,7 @@ cd cmake-build-release
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
-Additionally, a benchmark script written in python is provided. This script creates a file on disk, then runs minigrep and times the execution and finally deletes the file from disk. The benchmark can be run using
+Additionally, a benchmark script written in Python 3 is provided. This script creates a file on disk, then runs minigrep and times the execution and finally deletes the file from disk. The benchmark can be run using
 ```
 python benchmark.py <minigrep path>
 ```
