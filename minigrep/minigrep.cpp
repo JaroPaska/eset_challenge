@@ -9,7 +9,7 @@
 
 namespace minigrep {
 
-constexpr int border_size = 3;      /**< The number of characters to show for the prefix and suffix. */
+constexpr int border_size = 3;        /**< The number of characters to show for the prefix and suffix. */
 constexpr int chunk_size = 1'000'000; /**< The maximum amount of characters that a single async task can process. */
 
 /**
@@ -156,7 +156,8 @@ std::ostream& operator<<(std::ostream& os, const Match& m) {
  * @param string String to be formatted.
  * @return A string with whitespace replaced.
  */
-[[nodiscard]] constexpr std::string transform(std::string_view string) {
+[[nodiscard]] /*constexpr*/ std::string
+transform(std::string_view string) { // constexpr std::string still being added to gcc and clang, only msvc supports it
     std::string result;
     for (const auto& c : string)
         switch (c) {
@@ -249,8 +250,8 @@ static_assert(prefix("abcd", 0) == "");
 static_assert(prefix("abcd", 2) == "ab");
 static_assert(suffix("abcd", 0) == "abc");
 static_assert(suffix("abcd", 2) == "cd");
-static_assert(transform("abcd") == "abcd");
-static_assert(transform("\t\n") == "\\t\\n");
+// static_assert(transform("abcd") == "abcd");
+// static_assert(transform("\t\n") == "\\t\\n");
 
 } // namespace test
 
